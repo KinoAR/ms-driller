@@ -11,7 +11,6 @@ import h3d.Vector;
 import dn.legacy.Controller;
 import dn.legacy.Controller.ControllerAccess;
 import h2d.Text.Align;
-import GameTypes.Controllers;
 
 /**
  * Align in the center.
@@ -226,22 +225,20 @@ inline function text(font:Font, str:String, color:Int, root:h2d.Object) {
  * Parse the markdown file within the game
  * and convert to text elements.
  */
-inline function parseMD(text:String) {
-  var lines = text.split('\n');
-  var mdEls = lines.map((el) -> {
-    if (el.startsWith('##')) {
-      return GameTypes.MDParse.MdHeader(el.replace('##', ''));
-    } else if (el.startsWith('#')) {
-      return GameTypes.MDParse.Header(el.replace('#', ''));
-    } else if (el.length > 0) {
-      return GameTypes.MDParse.Regular(el);
-    }
-
-    return Blank;
-  });
-  return mdEls;
-}
-
+// inline function parseMD(text:String) {
+//   var lines = text.split('\n');
+//   var mdEls = lines.map((el) -> {
+//     if (el.startsWith('##')) {
+//       return GameTypes.MDParse.MdHeader(el.replace('##', ''));
+//     } else if (el.startsWith('#')) {
+//       return GameTypes.MDParse.Header(el.replace('#', ''));
+//     } else if (el.length > 0) {
+//       return GameTypes.MDParse.Regular(el);
+//     }
+//     return Blank;
+//   });
+//   return mdEls;
+// }
 // Graphics Updates
 inline function createGraphics(parent:h2d.Object) {
   return new h2d.Graphics(parent);

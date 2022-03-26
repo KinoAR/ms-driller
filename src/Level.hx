@@ -1,3 +1,9 @@
+import scn.GameOver;
+import scn.Pause;
+import en.Player;
+import en.Enemy;
+import en.Collectible;
+
 class Level extends dn.Process {
   var game(get, never):Game;
 
@@ -35,9 +41,32 @@ class Level extends dn.Process {
 
   var invalidated = true;
 
+  public var scnPause:Pause;
+
+  public var collectibles:Group<Collectible>;
+  public var enemies:Group<Enemy>;
+
+  public var player:Player;
+
   public function new() {
     super(Game.ME);
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
+    createGroups();
+    createEntities();
+  }
+
+  public function createGroups() {
+    collectibles = new Group<Collectible>();
+    enemies = new Group<Enemy>();
+  }
+
+  public function createEntities() {
+    // Create Player
+
+    player = new Player(5, 5);
+
+    // Create collectibles
+    collectibles.add(new Collectible(0, 0));
   }
 
   /** TRUE if given coords are in level bounds **/
@@ -55,6 +84,24 @@ class Level extends dn.Process {
 
   public function hasAnyCollision(cx:Int, cy:Int) {
     return false;
+  }
+
+  /**
+   * Handles pausing the game
+   */
+  public function handlePause() {
+    if (game.ca.isKeyboardPressed(K.ESCAPE)) {
+      Assets.pauseIn.play();
+      this.pause();
+      scnPause = new Pause();
+    }
+  }
+
+  public function handleGameOver() {
+    if (player.isDead()) {
+      this.pause();
+      new GameOver();
+    }
   }
 
   function render() {
@@ -80,4 +127,6 @@ class Level extends dn.Process {
       render();
     }
   }
+
+  override function onDispose() {}
 }
