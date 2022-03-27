@@ -1,3 +1,9 @@
+import en.blocks.HeavyBlock;
+import en.blocks.IgnitionBlock;
+import en.blocks.RegBlock;
+import en.blocks.Block;
+import en.collectibles.Heart;
+import en.hazards.Exit;
 import scn.GameOver;
 import scn.Pause;
 import en.Player;
@@ -45,11 +51,17 @@ class Level extends dn.Process {
 
   public var collectibles:Group<Collectible>;
   public var enemies:Group<Enemy>;
+  public var blocks:Group<Block>;
+
+  public var exits:Group<Exit>;
 
   public var player:Player;
 
-  public function new() {
+  public var data:LDTkProj_Level;
+
+  public function new(level:LDTkProj_Level) {
     super(Game.ME);
+    this.data = level;
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
     createGroups();
     createEntities();
@@ -58,15 +70,33 @@ class Level extends dn.Process {
   public function createGroups() {
     collectibles = new Group<Collectible>();
     enemies = new Group<Enemy>();
+    exits = new Group<Exit>();
   }
 
   public function createEntities() {
     // Create Player
 
-    player = new Player(5, 5);
+    for (ePlayer in data.l_Entities.all_Player) {
+      player = new Player(ePlayer.cx, ePlayer.cy);
+    }
+
+    // Create Blocks
+    for (regBlock in data.l_Entities.all_RegBlock) {
+      blocks.add(new RegBlock(regBlock.cx, regBlock.cy));
+    }
+
+    for (heavyBlock in data.l_Entities.all_HeavyBlock) {
+      blocks.add(new HeavyBlock(heavyBlock.cx, heavyBlock.cy));
+    }
+
+    for (ignitionBlock in data.l_Entities.all_IgnitionBlock) {
+      blocks.add(new IgnitionBlock(ignitionBlock.cx, ignitionBlock.cy));
+    }
 
     // Create collectibles
-    collectibles.add(new Collectible(0, 0));
+    for (heart in data.l_Entities.all_Heart) {
+      collectibles.add(new Heart(heart));
+    }
   }
 
   /** TRUE if given coords are in level bounds **/
@@ -85,6 +115,8 @@ class Level extends dn.Process {
   public function hasAnyCollision(cx:Int, cy:Int) {
     return false;
   }
+
+  public function hasExitCollision(x:Int, y:Int) {}
 
   /**
    * Handles pausing the game
