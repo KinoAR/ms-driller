@@ -19,6 +19,8 @@ class Assets {
   public static var pauseIn:Sound;
   public static var pauseOut:Sound;
 
+  public static var projData:LDTkProj;
+
   static var initDone = false;
 
   public static function init() {
@@ -42,28 +44,28 @@ class Assets {
     pauseIn = hxd.Res.sound.pause_in;
     pauseOut = hxd.Res.sound.pause_out;
     // // Deep night project
-    // projData = new ldtkData.LDTkProj();
+    projData = new ldtkData.LDTkProj();
 
-    // #if debug
-    // // Gets the file entry for the LDtk file then uses it later
-    // // To reload the world / level
-    // var res = try hxd.Res.load(projData.projectFilePath.substr(4))
-    // catch (_) null; // assume the LDtk file is in "res/" subfolde
-    // if (res != null) {
-    //   res.watch(() -> {
-    //     // Delayer allows callbacks to be run in a future frame
-    //     // Cancel by ID cancels the LDTk delayer in a future frame
-    //     Main.ME.delayer.cancelById('ldtk');
-    //     Main.ME.delayer.addS('ldtk', () -> {
-    //       projData.parseJson(res.entry.getText());
-    //       // Automatically reloads the level when the there
-    //       // are updates made to the LDtk file.
-    //       if (Game.ME != null) {
-    //         Game.ME.onLDtkReload();
-    //       }
-    //     }, 0.2);
-    //   });
-    // }
-    // #end
+    #if debug
+    // Gets the file entry for the LDtk file then uses it later
+    // To reload the world / level
+    var res = try hxd.Res.load(projData.projectFilePath.substr(4))
+    catch (_) null; // assume the LDtk file is in "res/" subfolde
+    if (res != null) {
+      res.watch(() -> {
+        // Delayer allows callbacks to be run in a future frame
+        // Cancel by ID cancels the LDTk delayer in a future frame
+        Main.ME.delayer.cancelById('ldtk');
+        Main.ME.delayer.addS('ldtk', () -> {
+          projData.parseJson(res.entry.getText());
+          // Automatically reloads the level when the there
+          // are updates made to the LDtk file.
+          if (Game.ME != null) {
+            Game.ME.onLDtkReload();
+          }
+        }, 0.2);
+      });
+    }
+    #end
   }
 }

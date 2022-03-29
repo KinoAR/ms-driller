@@ -1,18 +1,14 @@
-package en.hazards;
+package en.collectibles;
 
-/**
- * Exit which will send the player to the 
- * next level when they run into it.
- */
-class Exit extends Entity {
+class Gem extends Collectible {
   public function new(x:Int, y:Int) {
     super(x, y);
     setupGraphic();
   }
 
-  public function setupGraphic() {
+  override function setupGraphic() {
     var g = this.spr.createGraphics();
-    g.beginFill(0xffaaaa);
+    g.beginFill(0xffaa);
     g.drawRoundedRect(0, 0, Const.GRID, Const.GRID, 5);
     g.endFill();
   }

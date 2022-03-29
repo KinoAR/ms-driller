@@ -44,6 +44,7 @@ class Player extends BaseEnt {
     g.beginFill(0xffff00);
     g.drawRect(0, 0, size, size);
     g.endFill();
+    g.y -= 8;
   }
 
   override function onPreStepX() {
@@ -52,43 +53,49 @@ class Player extends BaseEnt {
 
   override function onPreStepY() {
     super.onPreStepY();
-    if (level.hasAnyCollision(cx, cy + 1)
+
+    if (level.hasAnyCollision(cx, cy)
       && yr >= 0.5
-      || level.hasAnyCollision(cx + M.round(xr), cy + 1)
+      || level.hasAnyCollision(cx + M.round(xr), cy)
       && yr >= 0.5) {
       // Handle squash and stretch for entities in the game
       if (level.hasAnyCollision(cx, cy + M.round(yr + 0.3))) {
-        setSquashY(0.6);
+        // setSquashY(0.6);
         dy = 0;
       }
-      yr = 0.3;
+      yr = 0.5;
       dy = 0;
     }
 
-    if (level.hasAnyCollision(cx, cy + 1)) {
-      // setSquashY(0.6);
-      yr = -0.1;
-      dy = -0.1;
-    }
+    // if (level.hasAnyCollision(cx, cy + 1)) {
+    //   // setSquashY(0.6);
+    //   yr = -0.1;
+    //   dy = -0.1;
+    // }
 
-    if (level.hasAnyCollision(cx, cy - 1)) {
-      yr = 1.01;
-      dy = .1;
-      // setSquashY(0.6);
-    }
+    // if (level.hasAnyCollision(cx, cy - 1)) {
+    //   yr = 1.01;
+    //   dy = .1;
+    //   // setSquashY(0.6);
+    // }
   }
 
   override function update() {
+    handleGravity();
     super.update();
     updateInvincibility();
     updateCollisions();
     handleMovement();
   }
 
+  override function postUpdate() {
+    super.postUpdate();
+  }
+
   public function handleMovement() {
     var left = ct.leftDown();
     var right = ct.rightDown();
-    var up = ct.upDown();
+    var up = ct.upPressed();
 
     if (left || right || up) {
       if (left) {
@@ -98,7 +105,7 @@ class Player extends BaseEnt {
       }
 
       if (up) {
-        dy = JUMP_FORCE;
+        dy = -JUMP_FORCE;
       }
     }
   }
@@ -128,6 +135,10 @@ class Player extends BaseEnt {
       collideWithCollectible();
       collideWithExit();
     }
+  }
+
+  public function handleGravity() {
+    dy += .098;
   }
 
   public function collideWithEnemy() {}
