@@ -8,8 +8,9 @@ class Gem extends Collectible {
 
   override function setupGraphic() {
     var g = this.spr.createGraphics();
-    g.beginFill(0xffaa);
-    g.drawRoundedRect(0, 0, Const.GRID, Const.GRID, 5);
+    var tile = Assets.gameTiles.getTile(Assets.gameTilesDict.GemGreen);
+    g.beginTileFill(tile);
+    g.drawTile(0, 0, tile);
     g.endFill();
   }
 }

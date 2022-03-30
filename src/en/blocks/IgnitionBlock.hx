@@ -14,9 +14,10 @@ class IgnitionBlock extends Block {
   }
 
   override function setupGraphic() {
-    var g = this.spr.createGraphics();
-    g.beginFill(0xff4a00);
-    g.drawRect(0, 0, Const.GRID, Const.GRID);
+    var g = spr.createGraphics();
+    var tile = Assets.gameTiles.getTile(Assets.gameTilesDict.ExplosiveBox);
+    g.beginTileFill(tile);
+    g.drawTile(0, 0, tile);
     g.endFill();
   }
 }

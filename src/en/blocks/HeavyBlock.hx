@@ -11,9 +11,10 @@ class HeavyBlock extends Block {
   }
 
   override function setupGraphic() {
-    var g = this.spr.createGraphics();
-    g.beginFill(0x111111);
-    g.drawRect(0, 0, Const.GRID, Const.GRID);
+    var g = spr.createGraphics();
+    var tile = Assets.gameTiles.getTile(Assets.gameTilesDict.SteelBox);
+    g.beginTileFill(tile);
+    g.drawTile(0, 0, tile);
     g.endFill();
   }
 }
