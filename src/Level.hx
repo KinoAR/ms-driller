@@ -132,6 +132,24 @@ class Level extends dn.Process {
     return false;
   }
 
+  public function hasAnyBlockCollision(cx:Int, cy:Int) {
+    for (block in blocks) {
+      if (block.cx == cx && block.cy == cy) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public function getBlockCollision(cx:Int, cy:Int) {
+    for (block in blocks) {
+      if (block.cx == cx && block.cy == cy) {
+        return block;
+      }
+    }
+    return null;
+  }
+
   public function hasExitCollision(x:Int, y:Int) {
     for (exit in exits) {
       if (exit.cx == x && exit.cy == y) {

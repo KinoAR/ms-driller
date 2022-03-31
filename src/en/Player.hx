@@ -1,5 +1,6 @@
 package en;
 
+import h3d.Vector;
 import dn.legacy.Controller.ControllerAccess;
 
 /**
@@ -16,6 +17,9 @@ class Player extends BaseEnt {
   public static inline var JUMP_FORCE:Float = 1;
 
   public var isInvincible(get, null):Bool;
+
+  public var drilling:Bool;
+  public var drillDir:Vector;
 
   public inline function get_isInvincible() {
     return cd.has('invincibleTime');
@@ -86,6 +90,7 @@ class Player extends BaseEnt {
     updateInvincibility();
     updateCollisions();
     handleMovement();
+    handleDrilling();
   }
 
   override function postUpdate() {
@@ -106,6 +111,21 @@ class Player extends BaseEnt {
 
       if (up) {
         dy = -JUMP_FORCE;
+      }
+    }
+  }
+
+  public function handleDrilling() {
+    drilling = ct.xDown();
+    // Handle Drill Directions
+    if (drilling) {
+      drillDir.x = M.round(dx);
+      drillDir.y = M.round(dy);
+      var block = level.getBlockCollision(cx, cy);
+      if (block != null && !cd.has('drilled')) {
+        // Get Block and Delete it
+        block.takeDamage();
+        cd.setS('drilled', 0.25);
       }
     }
   }
