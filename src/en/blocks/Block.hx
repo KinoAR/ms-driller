@@ -36,11 +36,11 @@ class Block extends Entity {
       if (health > 0) {
         health -= 1;
         cd.setS('damaged', 0.2);
+        Assets.damageSnd.play();
       }
-
-      if (health <= 0) {
-        this.destroy();
-      }
+    }
+    if (health <= 0) {
+      this.destroy();
     }
   }
 

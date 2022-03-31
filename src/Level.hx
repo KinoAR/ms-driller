@@ -58,6 +58,9 @@ class Level extends dn.Process {
 
   public var player:Player;
 
+  public var score:Int;
+  public var highScore:Int;
+
   public var data:LDTkProj_Level;
 
   public function new(level:LDTkProj_Level) {
@@ -80,6 +83,7 @@ class Level extends dn.Process {
 
     for (ePlayer in data.l_Entities.all_Player) {
       player = new Player(ePlayer.cx, ePlayer.cy);
+      game.camera.trackEntity(player, true);
     }
 
     // Create Blocks
@@ -123,9 +127,18 @@ class Level extends dn.Process {
     invalidated = true;
   }
 
+  public function getCollectible(cx:Int, cy:Int) {
+    for (collectible in collectibles) {
+      if (collectible.cx == cx && collectible.cy == cy && collectible.isAlive()) {
+        return collectible;
+      }
+    }
+    return null;
+  }
+
   public function hasAnyCollision(cx:Int, cy:Int) {
     for (block in blocks) {
-      if (block.cx == cx && block.cy == cy) {
+      if (block.cx == cx && block.cy == cy && block.isAlive()) {
         return true;
       }
     }
@@ -134,7 +147,7 @@ class Level extends dn.Process {
 
   public function hasAnyBlockCollision(cx:Int, cy:Int) {
     for (block in blocks) {
-      if (block.cx == cx && block.cy == cy) {
+      if (block.cx == cx && block.cy == cy && block.isAlive()) {
         return true;
       }
     }
@@ -143,7 +156,7 @@ class Level extends dn.Process {
 
   public function getBlockCollision(cx:Int, cy:Int) {
     for (block in blocks) {
-      if (block.cx == cx && block.cy == cy) {
+      if (block.cx == cx && block.cy == cy && block.isAlive()) {
         return block;
       }
     }
@@ -152,7 +165,7 @@ class Level extends dn.Process {
 
   public function hasExitCollision(x:Int, y:Int) {
     for (exit in exits) {
-      if (exit.cx == x && exit.cy == y) {
+      if (exit.cx == x && exit.cy == y && exit.isAlive()) {
         return true;
       }
     }

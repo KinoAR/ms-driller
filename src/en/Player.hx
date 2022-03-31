@@ -13,7 +13,7 @@ class Player extends BaseEnt {
 
   public static inline var INVINCIBLE_TIME:Float = 3;
 
-  public static inline var MOVE_SPD:Float = .3;
+  public static inline var MOVE_SPD:Float = .1;
   public static inline var JUMP_FORCE:Float = 1;
 
   public var isInvincible(get, null):Bool;
@@ -27,6 +27,7 @@ class Player extends BaseEnt {
 
   public function new(x:Int, y:Int) {
     super(x, y);
+    drillDir = new Vector();
     setup();
   }
 
@@ -53,6 +54,20 @@ class Player extends BaseEnt {
 
   override function onPreStepX() {
     super.onPreStepX();
+
+    if (level.hasAnyCollision(cx + 1,
+      cy - 1) && xr >= 0.7) // Handle squash and stretch for entities in the game
+    {
+      xr = 0.5;
+      dx = 0;
+      setSquashY(0.6);
+    }
+
+    if (level.hasAnyCollision(cx - 1, cy - 1) && xr <= 0.3) {
+      xr = 0.3;
+      dx = 0;
+      setSquashY(0.6);
+    }
   }
 
   override function onPreStepY() {
@@ -116,7 +131,7 @@ class Player extends BaseEnt {
   }
 
   public function handleDrilling() {
-    drilling = ct.xDown();
+    drilling = ct.bDown();
     // Handle Drill Directions
     if (drilling) {
       drillDir.x = M.round(dx);
@@ -151,8 +166,10 @@ class Player extends BaseEnt {
 
   public function updateCollisions() {
     if (level != null) {
-      collideWithEnemy();
-      collideWithCollectible();
+      if (this.isAlive()) {
+        collideWithCollectible();
+        collideWithEnemy();
+      }
       collideWithExit();
     }
   }
@@ -163,7 +180,21 @@ class Player extends BaseEnt {
 
   public function collideWithEnemy() {}
 
-  public function collideWithCollectible() {}
+  public function collideWithCollectible() {
+    var collectible = level.getCollectible(cx, cy);
+    if (collectible != null) {
+      var cType = Type.getClass(collectible);
+      switch (cType) {
+        case en.collectibles.Gem:
+          level.score += 100;
+        case en.collectibles.SilverGem:
+          level.score += 500;
+        case en.collectibles.RubyGem:
+          level.score += 2000;
+      }
+      collectible.destroy();
+    }
+  }
 
   public function collideWithExit() {}
 
