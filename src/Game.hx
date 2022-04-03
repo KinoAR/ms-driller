@@ -1,3 +1,4 @@
+import scn.Title;
 import dn.Process;
 import hxd.Key;
 import dn.legacy.Controller.ControllerAccess;
@@ -38,6 +39,7 @@ class Game extends dn.Process {
     camera = new Camera();
     hud = new ui.Hud();
     hud.hide();
+    // new Title();
     startInitialGame();
 
     Process.resizeAll();

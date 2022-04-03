@@ -134,14 +134,28 @@ class Player extends BaseEnt {
     drilling = ct.bDown();
     // Handle Drill Directions
     if (drilling) {
-      drillDir.x = M.round(dx);
-      drillDir.y = M.round(dy);
-      var block = level.getBlockCollision(cx, cy);
+      drillDir.x = dx;
+      drillDir.y = dy;
+      var drillDirX = analogDir(drillDir.x);
+      var drillDirY = analogDir(drillDir.y);
+
+      var atLevel = drillDirX == 0 ? 0 : -1;
+
+      var block = level.getBlockCollision(cx + drillDirX,
+        (cy + drillDirY) + atLevel);
       if (block != null && !cd.has('drilled')) {
         // Get Block and Delete it
         block.takeDamage();
         cd.setS('drilled', 0.25);
       }
+    }
+  }
+
+  private function analogDir(val:Float) {
+    if (val == 0) {
+      return 0;
+    } else {
+      return val > 0 ? 1 : -1;
     }
   }
 
@@ -193,6 +207,7 @@ class Player extends BaseEnt {
         case en.collectibles.RubyGem:
           level.score += 2000;
       }
+      Assets.collectSnd.play();
       collectible.destroy();
     }
   }

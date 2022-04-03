@@ -242,6 +242,8 @@ class Level extends dn.Process {
   override function update() {
     super.update();
     updateTimer();
+    handlePause();
+    handleGameOver();
   }
 
   public function updateTimer() {
