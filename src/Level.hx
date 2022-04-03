@@ -1,3 +1,5 @@
+import h2d.Bitmap;
+import hxd.Timer;
 import en.collectibles.Gem;
 import en.blocks.HeavyBlock;
 import en.blocks.IgnitionBlock;
@@ -60,12 +62,25 @@ class Level extends dn.Process {
 
   public var score:Int;
   public var highScore:Int;
+  public var timer:Float;
+  public var bg:h2d.Graphics;
 
   public var data:LDTkProj_Level;
 
   public function new(level:LDTkProj_Level) {
     super(Game.ME);
     this.data = level;
+    this.score = 0;
+    this.highScore = 0;
+    this.timer = 0;
+    var bgTile = hxd.Res.img.BGLarge.toTile();
+    bg = new h2d.Graphics(root);
+    bg.tileWrap = true;
+    bg.tile = bgTile;
+
+    // bg.width = game.w();
+    // bg.height = game.h();
+
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
     createGroups();
     createEntities();
@@ -194,8 +209,24 @@ class Level extends dn.Process {
     // Placeholder level render
     root.removeChildren();
 
-    // var tlGroup = data.l_Level.render();
-    // root.addChild(tlGroup);
+    root.addChild(bg);
+    // bg.tile.dx += timer * 10;
+    // Parallax Scroll
+    bg.beginTileFill(bg.tile);
+    var xStep = Std.int(game.w() / bg.tile.width);
+    var yStep = Std.int(game.h() / bg.tile.height);
+    var size = bg.tile.width;
+    for (x in 0...xStep) {
+      for (y in 0...yStep) {
+        bg.drawTile(x * size, y * size, bg.tile);
+      }
+    }
+    bg.endFill();
+    var scroll = Math.abs(Math.cos(timer));
+    var scroller = Timer.elapsedTime * 20;
+    bg.tile.scrollDiscrete(scroller * -1, scroller);
+    var tlGroup = data.l_Level.render();
+    root.addChild(tlGroup);
     // for (cx in 0...cWid)
     //   for (cy in 0...cHei) {
     //     var g = new h2d.Graphics(root);
@@ -208,14 +239,38 @@ class Level extends dn.Process {
     //   }
   }
 
+  override function update() {
+    super.update();
+    updateTimer();
+  }
+
+  public function updateTimer() {
+    timer += Timer.elapsedTime;
+    game.invalidateHud();
+  }
+
   override function postUpdate() {
     super.postUpdate();
-
+    invalidate();
     if (invalidated) {
       invalidated = false;
       render();
     }
   }
 
-  override function onDispose() {}
+  override function onDispose() {
+    player.dispose();
+
+    for (block in blocks) {
+      block.destroy();
+    }
+
+    for (collectible in collectibles) {
+      collectible.destroy();
+    }
+
+    for (enemy in enemies) {
+      enemy.destroy();
+    }
+  }
 }

@@ -182,6 +182,7 @@ class Player extends BaseEnt {
 
   public function collideWithCollectible() {
     var collectible = level.getCollectible(cx, cy);
+
     if (collectible != null) {
       var cType = Type.getClass(collectible);
       switch (cType) {
@@ -196,7 +197,12 @@ class Player extends BaseEnt {
     }
   }
 
-  public function collideWithExit() {}
+  /**
+   * Complete level the second you get to the exit.
+   */
+  public function collideWithExit() {
+    game.completeLevel();
+  }
 
   override function takeDamage(value:Int = 1) {
     // Shake camera when the player takes damage.

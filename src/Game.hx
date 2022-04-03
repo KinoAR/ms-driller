@@ -37,8 +37,8 @@ class Game extends dn.Process {
 
     camera = new Camera();
     hud = new ui.Hud();
-    startInitialGame();
     hud.hide();
+    startInitialGame();
 
     Process.resizeAll();
     trace(Lang.t._("Game is ready."));
@@ -56,6 +56,10 @@ class Game extends dn.Process {
     level = new Level(Assets.projData.all_levels.World_Level_0);
     hud.show();
     fx = new Fx();
+  }
+
+  public function completeLevel() {
+    // Starts loading the next level
   }
 
   public inline function invalidateHud() {
