@@ -24,8 +24,13 @@ class Candlebi extends Enemy {
   }
 
   override function update() {
+    handleGravity();
     super.update();
     handleMovement();
+  }
+
+  public function handleGravity() {
+    dy += .098;
   }
 
   override function onPreStepX() {
