@@ -52,6 +52,7 @@ class Block extends Entity {
     this.spr.addChild(mySpr);
     mySpr.x -= 8;
     mySpr.y -= 8;
+    // should play a sound too
     mySpr.anim.play('destroy');
     mySpr.anim.setSpeed(3.5);
     mySpr.anim.onEnd(() -> this.destroy());

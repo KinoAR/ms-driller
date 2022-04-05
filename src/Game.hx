@@ -4,6 +4,8 @@ import hxd.Key;
 import dn.legacy.Controller.ControllerAccess;
 
 class Game extends dn.Process {
+  public var deathCount:Int = 0;
+
   public static var ME:Game;
 
   /** Game controller (pad or keyboard) **/

@@ -200,6 +200,7 @@ class Level extends dn.Process {
 
   public function handleGameOver() {
     if (player.isDead()) {
+      game.deathCount += 1;
       this.pause();
       new GameOver();
     }
