@@ -7,6 +7,7 @@ package en.blocks;
  */
 class Block extends Entity {
   public var health:Int = 3;
+  public var deathAnimStart = false;
 
   public function new(x:Int, y:Int) {
     super(x, y);
@@ -39,9 +40,21 @@ class Block extends Entity {
         Assets.damageSnd.play();
       }
     }
-    if (health <= 0) {
-      this.destroy();
+    if (health <= 0 && !deathAnimStart) {
+      handleDestroy();
     }
+  }
+
+  public function handleDestroy() {
+    deathAnimStart = true;
+    var slib = hxd.Res.img.smoke_destroy_ase.toAseprite().aseToSlib(Const.FPS);
+    var mySpr = new HSprite(slib);
+    this.spr.addChild(mySpr);
+    mySpr.x -= 8;
+    mySpr.y -= 8;
+    mySpr.anim.play('destroy');
+    mySpr.anim.setSpeed(3.5);
+    mySpr.anim.onEnd(() -> this.destroy());
   }
 
   /**
