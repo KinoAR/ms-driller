@@ -1,3 +1,4 @@
+import en.enemy.Candlebi;
 import h2d.Bitmap;
 import hxd.Timer;
 import en.collectibles.Gem;
@@ -99,6 +100,12 @@ class Level extends dn.Process {
     for (ePlayer in data.l_Entities.all_Player) {
       player = new Player(ePlayer.cx, ePlayer.cy);
       game.camera.trackEntity(player, true);
+    }
+
+    // Create Enemies
+    for (eCandlebi in data.l_Entities.all_Candlebi) {
+      var lCandlebi = new Candlebi(eCandlebi.cx, eCandlebi.cy);
+      enemies.add(lCandlebi);
     }
 
     // Create Blocks
