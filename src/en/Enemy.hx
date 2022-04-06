@@ -8,6 +8,7 @@ class Enemy extends BaseEnt {
    */
   public function new(x:Int, y:Int) {
     super(x, y);
+    setupGraphics();
   }
 
   public function setupGraphics() {}

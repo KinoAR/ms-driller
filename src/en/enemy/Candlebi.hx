@@ -35,20 +35,23 @@ class Candlebi extends Enemy {
 
   override function onPreStepX() {
     super.onPreStepX();
-
+    var flippable = false;
     if (level.hasAnyCollision(cx + 1,
       cy - 1) && xr >= 0.7) // Handle squash and stretch for entities in the game
     {
       xr = 0.5;
       dx = 0;
       setSquashY(0.6);
-      flipX();
+      flippable = true;
     }
 
     if (level.hasAnyCollision(cx - 1, cy - 1) && xr <= 0.3) {
       xr = 0.3;
       dx = 0;
       setSquashY(0.6);
+      flippable = true;
+    }
+    if (flippable) {
       flipX();
     }
   }
@@ -71,7 +74,7 @@ class Candlebi extends Enemy {
   }
 
   public function handleMovement() {
-    dx = MOVE_SPD;
+    dx = MOVE_SPD * flip;
   }
 
   public function flipX() {
