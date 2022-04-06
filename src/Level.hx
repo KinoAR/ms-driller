@@ -185,6 +185,22 @@ class Level extends dn.Process {
     return null;
   }
 
+  /**
+   * Handles enemy collision.
+   * Can use type is to separate into
+   * what happens against different types of enemies.
+   * @param cx 
+   * @param cy 
+   */
+  public function getEnemyCollision(cx:Int, cy:Int) {
+    for (enemy in enemies) {
+      if (enemy.cx == cx && enemy.cy == cy && enemy.isAlive()) {
+        return enemy;
+      }
+    }
+    return null;
+  }
+
   public function hasExitCollision(x:Int, y:Int) {
     for (exit in exits) {
       if (exit.cx == x && exit.cy == y && exit.isAlive()) {
