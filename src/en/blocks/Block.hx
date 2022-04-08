@@ -8,9 +8,11 @@ package en.blocks;
 class Block extends Entity {
   public var health:Int = 3;
   public var deathAnimStart = false;
+  public var noEdge:Bool;
 
   public function new(x:Int, y:Int) {
     super(x, y);
+    noEdge = false;
     setupGraphic();
   }
 
@@ -24,6 +26,33 @@ class Block extends Entity {
   override function update() {
     super.update();
     handleDamage();
+    noEdge = getEdgeDetection();
+    if (noEdge) {
+      handleGravity();
+    }
+  }
+
+  public function handleGravity() {
+    dy += .098;
+  }
+
+  /**
+   * Determines if block falls or not.
+   */
+  public function getEdgeDetection() {
+    var below = level.getBlockCollision(cx, cy + 1);
+    if (below != null) {
+      return false;
+    }
+    var right = level.getBlockCollision(cx + 1, cy + 1);
+    if (right != null) {
+      return false;
+    }
+    var left = level.getBlockCollision(cx - 1, cy + 1);
+    if (left != null) {
+      return false;
+    }
+    return true;
   }
 
   public function handleDamage() {}
