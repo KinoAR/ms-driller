@@ -249,7 +249,7 @@ class Level extends dn.Process {
     var scroll = Math.abs(Math.cos(timer));
     var scroller = Timer.elapsedTime * 20;
     bg.tile.scrollDiscrete(scroller * -1, scroller);
-    var tlGroup = data.l_Level.render();
+    var tlGroup = data.l_LevelIGrid.render();
     root.addChild(tlGroup);
     // for (cx in 0...cWid)
     //   for (cy in 0...cHei) {
