@@ -1,3 +1,5 @@
+import en.collectibles.SilverGem;
+import en.collectibles.RubyGem;
 import en.enemy.Candlebi;
 import h2d.Bitmap;
 import hxd.Timer;
@@ -128,6 +130,14 @@ class Level extends dn.Process {
 
     for (gem in data.l_Entities.all_Gem) {
       collectibles.add(new Gem(gem.cx, gem.cy));
+    }
+
+    for (rGem in data.l_Entities.all_RubyGem) {
+      collectibles.add(new RubyGem(rGem.cx, rGem.cy));
+    }
+
+    for (sGem in data.l_Entities.all_SilverGem) {
+      collectibles.add(new SilverGem(sGem.cx, sGem.cy));
     }
 
     // Create Hazards

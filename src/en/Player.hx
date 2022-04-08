@@ -193,7 +193,15 @@ class Player extends BaseEnt {
     dy += .098;
   }
 
-  public function collideWithEnemy() {}
+  /**
+   * Handle enemy collisions within the game.
+   */
+  public function collideWithEnemy() {
+    var enemy = level.getEnemyCollision(cx, cy);
+    if (enemy != null) {
+      takeDamage();
+    }
+  }
 
   public function collideWithCollectible() {
     var collectible = level.getCollectible(cx, cy);
