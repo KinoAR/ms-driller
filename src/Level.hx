@@ -159,6 +159,10 @@ class Level extends dn.Process {
   }
 
   public function hasAnyCollision(cx:Int, cy:Int) {
+    // 1 Standds for Floor in LDTK Int grid layer
+    if (data.l_LevelIGrid.getInt(cx, cy) == 1) {
+      return true;
+    }
     for (block in blocks) {
       if (block.cx == cx && block.cy == cy && block.isAlive()) {
         return true;

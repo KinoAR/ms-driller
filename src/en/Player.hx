@@ -50,6 +50,7 @@ class Player extends BaseEnt {
     g.drawRect(0, 0, size, size);
     g.endFill();
     g.y -= 8;
+    g.x -= 8;
   }
 
   override function onPreStepX() {
