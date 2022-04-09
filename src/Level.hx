@@ -1,3 +1,4 @@
+import en.blocks.StaticBlock;
 import en.collectibles.SilverGem;
 import en.collectibles.RubyGem;
 import en.enemy.Candlebi;
@@ -111,16 +112,24 @@ class Level extends dn.Process {
     }
 
     // Create Blocks
-    for (regBlock in data.l_Entities.all_RegBlock) {
-      blocks.add(new RegBlock(regBlock.cx, regBlock.cy));
-    }
-
-    for (heavyBlock in data.l_Entities.all_HeavyBlock) {
-      blocks.add(new HeavyBlock(heavyBlock.cx, heavyBlock.cy));
-    }
-
-    for (ignitionBlock in data.l_Entities.all_IgnitionBlock) {
-      blocks.add(new IgnitionBlock(ignitionBlock.cx, ignitionBlock.cy));
+    for (cx in 0...data.l_IEntityGrid.cWid) {
+      for (cy in 0...data.l_IEntityGrid.cHei) {
+        var tileInt = data.l_IEntityGrid.getInt(cx, cy);
+        switch (tileInt) {
+          // Regular Block
+          case 3:
+            blocks.add(new RegBlock(cx, cy));
+          // Static Block
+          case 4:
+            blocks.add(new StaticBlock(cx, cy));
+          // Steel Block
+          case 5:
+            blocks.add(new HeavyBlock(cx, cy));
+          // Ignition Block
+          case 6:
+            blocks.add(new IgnitionBlock(cx, cy));
+        }
+      }
     }
 
     // Create collectibles
@@ -264,6 +273,7 @@ class Level extends dn.Process {
     var scroller = Timer.elapsedTime * 20;
     bg.tile.scrollDiscrete(scroller * -1, scroller);
     var tlGroup = data.l_LevelIGrid.render();
+    tlGroup.y += 16;
     root.addChild(tlGroup);
     // for (cx in 0...cWid)
     //   for (cy in 0...cHei) {
