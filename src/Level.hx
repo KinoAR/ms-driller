@@ -115,6 +115,7 @@ class Level extends dn.Process {
     for (cx in 0...data.l_IEntityGrid.cWid) {
       for (cy in 0...data.l_IEntityGrid.cHei) {
         var tileInt = data.l_IEntityGrid.getInt(cx, cy);
+        trace(tileInt);
         switch (tileInt) {
           // Regular Block
           case 3:

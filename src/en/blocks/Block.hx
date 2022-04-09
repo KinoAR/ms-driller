@@ -55,6 +55,10 @@ class Block extends Entity {
     if (left != null) {
       return false;
     }
+
+    if (level.hasAnyCollision(cx, cy + 1)) {
+      return false;
+    }
     return true;
   }
 

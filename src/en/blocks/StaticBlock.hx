@@ -13,7 +13,7 @@ class StaticBlock extends Block {
 
   override function setupGraphic() {
     var g = spr.createGraphics();
-    var tile = Assets.gameTiles.getTile(Assets.gameTilesDict.SteelBox);
+    var tile = Assets.gameTiles.getTile(Assets.gameTilesDict.StaticBlock);
     g.beginTileFill(tile);
     g.drawTile(0, 0, tile);
     g.endFill();
