@@ -7,5 +7,6 @@ class RubyGem extends Gem {
     g.beginTileFill(tile);
     g.drawTile(0, 0, tile);
     g.endFill();
+    g.x -= 8;
   }
 }

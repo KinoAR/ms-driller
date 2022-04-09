@@ -15,5 +15,6 @@ class Exit extends Entity {
     g.beginFill(0xffaaaa);
     g.drawRoundedRect(0, 0, Const.GRID, Const.GRID, 5);
     g.endFill();
+    g.x -= 8;
   }
 }

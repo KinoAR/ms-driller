@@ -29,6 +29,9 @@ class Block extends Entity {
     noEdge = getEdgeDetection();
     if (noEdge) {
       handleGravity();
+    } else {
+      dy = 0;
+      yr = 1;
     }
   }
 
